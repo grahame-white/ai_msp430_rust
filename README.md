@@ -35,11 +35,23 @@ cargo build --release
 
 3. Generate TI-TXT format (optional):
 ```bash
-# Generate TI-TXT format for use with TI programming tools
+# Generate proper TI-TXT format for use with TI programming tools like UniFlash
 ./generate_txt.sh
-# or manually:
-objcopy -O ihex target/msp430fr2355/release/msp430_blinky target/msp430fr2355/release/msp430_blinky.txt
 ```
+
+The TI-TXT format uses a specific structure:
+```
+@FFFE
+00 80
+q
+```
+
+Where:
+- `@XXXX` specifies the memory address in hex
+- Following lines contain hex data bytes separated by spaces
+- `q` marks the end of the file
+
+This format is compatible with TI UniFlash and other TI programming tools.
 
 ## Project Structure
 

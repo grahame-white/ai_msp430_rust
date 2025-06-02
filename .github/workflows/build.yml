@@ -35,12 +35,16 @@ jobs:
       
     - name: Generate TI-TXT format
       run: |
-        # Convert ELF binary to TI-TXT format (Intel HEX)
-        objcopy -O ihex target/msp430fr2355/release/msp430_blinky target/msp430fr2355/release/msp430_blinky.txt
+        # Make scripts executable
+        chmod +x generate_txt.sh hex_to_titxt.py
+        
+        # Generate proper TI-TXT format
+        ./generate_txt.sh
+        
         echo "Generated TI-TXT file:"
         ls -la target/msp430fr2355/release/msp430_blinky.txt
-        echo "File contents preview:"
-        head -10 target/msp430fr2355/release/msp430_blinky.txt
+        echo "TI-TXT file contents:"
+        cat target/msp430fr2355/release/msp430_blinky.txt
       
     - name: Upload firmware binaries
       uses: actions/upload-artifact@v4
