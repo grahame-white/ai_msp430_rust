@@ -1,0 +1,8 @@
+[build]
+target = "msp430fr2355.json"
+
+[target.msp430fr2355]
+runner = "echo 'Target built successfully for MSP430FR2355!'"
+
+[unstable]
+build-std = ["core"]

@@ -1,0 +1,56 @@
+name: Build MSP430 Firmware
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Install Rust nightly
+      uses: dtolnay/rust-toolchain@nightly
+      with:
+        components: rust-src
+        
+    - name: Cache cargo dependencies
+      uses: actions/cache@v4
+      with:
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry/index/
+          ~/.cargo/registry/cache/
+          ~/.cargo/git/db/
+          target/
+        key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+        
+    - name: Build firmware
+      run: cargo build --release
+      
+    - name: Generate TI-TXT format
+      run: |
+        # Make scripts executable
+        chmod +x generate_txt.sh hex_to_titxt.py
+        
+        # Generate proper TI-TXT format
+        ./generate_txt.sh
+        
+        echo "Generated TI-TXT file:"
+        ls -la target/msp430fr2355/release/msp430_blinky.txt
+        echo "TI-TXT file contents:"
+        cat target/msp430fr2355/release/msp430_blinky.txt
+      
+    - name: Upload firmware binaries
+      uses: actions/upload-artifact@v4
+      with:
+        name: msp430-firmware
+        path: |
+          target/msp430fr2355/release/msp430_blinky
+          target/msp430fr2355/release/msp430_blinky.txt
+        retention-days: 30

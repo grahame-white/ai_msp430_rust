@@ -1,0 +1,15 @@
+[package]
+name = "msp430_blinky"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+msp430fr2355 = { version = "0.5", features = ["rt", "critical-section"] }
+msp430-rt = "0.4"
+panic-msp430 = "0.4"
+embedded-hal = "1.0"
+nb = "1.0"
+
+[profile.release]
+debug = true
+lto = true
