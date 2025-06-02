@@ -8,11 +8,12 @@ use panic_msp430 as _;
 
 // LED is connected to P1.0 on MSP430FR2355 LaunchPad
 const LED_PIN: u8 = 0;
+const BLINK_DELAY: u32 = 100_000;
 
 #[entry]
 fn main() -> ! {
     // Get peripheral instances
-    let peripherals = unsafe { pac::Peripherals::steal() };
+    let peripherals = pac::Peripherals::take().expect("Failed to take peripherals");
     let p1 = peripherals.P1;
     
     // Configure P1.0 as output (LED)
@@ -29,7 +30,7 @@ fn main() -> ! {
         }
         
         // Simple delay
-        delay_cycles(100_000);
+        delay_cycles(BLINK_DELAY);
         
         // Turn LED off
         unsafe {
@@ -37,7 +38,7 @@ fn main() -> ! {
         }
         
         // Simple delay
-        delay_cycles(100_000);
+        delay_cycles(BLINK_DELAY);
     }
 }
 

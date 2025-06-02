@@ -63,6 +63,7 @@ version = "0.5.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ff0df5faf899d6acd35e5094c8e8b5c553a4fa9296eba010e63d78d86f70eb0d"
 dependencies = [
+ "critical-section",
  "msp430",
  "msp430-rt",
  "portable-atomic 0.3.20",
