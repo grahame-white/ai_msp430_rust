@@ -33,6 +33,14 @@ rustup component add rust-src
 cargo build --release
 ```
 
+3. Generate TI-TXT format (optional):
+```bash
+# Generate TI-TXT format for use with TI programming tools
+./generate_txt.sh
+# or manually:
+objcopy -O ihex target/msp430fr2355/release/msp430_blinky target/msp430fr2355/release/msp430_blinky.txt
+```
+
 ## Project Structure
 
 - `src/main.rs` - Main application code with LED blink logic
@@ -51,14 +59,22 @@ cargo build --release
 
 ## Programming the Device
 
-The build produces an ELF file that can be programmed to the device using tools like:
+The build produces both ELF and TI-TXT formatted files that can be programmed to the device using various tools:
+
+### Using ELF format:
 - Code Composer Studio (CCS)
 - MSP430 Flasher
 - mspdebug (Linux)
 
-The compiled binary is located at:
-- Debug: `target/msp430fr2355/debug/msp430_blinky`
-- Release: `target/msp430fr2355/release/msp430_blinky`
+### Using TI-TXT format:
+- MSP430 programming tools that support Intel HEX format
+- TI UniFlash
+- Custom programming utilities
+
+The compiled files are located at:
+- ELF Binary (Debug): `target/msp430fr2355/debug/msp430_blinky`
+- ELF Binary (Release): `target/msp430fr2355/release/msp430_blinky`
+- TI-TXT Format: `target/msp430fr2355/release/msp430_blinky.txt`
 
 ## License
 

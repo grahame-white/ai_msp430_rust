@@ -33,9 +33,20 @@ jobs:
     - name: Build firmware
       run: cargo build --release
       
-    - name: Upload firmware binary
+    - name: Generate TI-TXT format
+      run: |
+        # Convert ELF binary to TI-TXT format (Intel HEX)
+        objcopy -O ihex target/msp430fr2355/release/msp430_blinky target/msp430fr2355/release/msp430_blinky.txt
+        echo "Generated TI-TXT file:"
+        ls -la target/msp430fr2355/release/msp430_blinky.txt
+        echo "File contents preview:"
+        head -10 target/msp430fr2355/release/msp430_blinky.txt
+      
+    - name: Upload firmware binaries
       uses: actions/upload-artifact@v4
       with:
         name: msp430-firmware
-        path: target/msp430fr2355/release/msp430_blinky
+        path: |
+          target/msp430fr2355/release/msp430_blinky
+          target/msp430fr2355/release/msp430_blinky.txt
         retention-days: 30
